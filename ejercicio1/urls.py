@@ -14,8 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from converter.process import *
+from django.urls import path, include
+from converter.process import query_currencies
+from rest_framework import routers
+from converter.views import CurrenciesViewSet
+
+router = routers.DefaultRouter()
+router.register(r'currencies', CurrenciesViewSet)
+
 urlpatterns = [
     path('query/', query_currencies, name='query_currencies'),
+    path('', include(router.urls)),
 ]

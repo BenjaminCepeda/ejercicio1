@@ -1,7 +1,8 @@
 import logging
 from django.http import HttpResponse
 from yahoofinancials import YahooFinancials
-from .models import Curencies
+from .models import Currencies
+import datetime
 
 
 def query_currencies(request):
@@ -19,7 +20,7 @@ def query_currencies(request):
     logging.debug(currencies)
     for currency in currencies:
         for d in currencies[currency]['prices']:
-            c = Curencies(d['date'], currency.replace("=X", ""), d['close'])
+            c = Currencies(query_date=datetime.datetime.fromtimestamp(d['date']), currency=currency.replace("=X",""), final_quote=d['close'])
             c.save()
     return HttpResponse("Start Currencies")
 
